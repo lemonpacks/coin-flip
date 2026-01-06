@@ -25,7 +25,9 @@ jobs:
 
     - name: Login to Expo
       run: |
-        eas login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}" --non-interactive
+        echo "${{ secrets.EXPO_USERNAME }}" > username.txt
+        echo "${{ secrets.EXPO_PASSWORD }}" > password.txt
+        eas login < username.txt < password.txt
       env:
         EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
         EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
