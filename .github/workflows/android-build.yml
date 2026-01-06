@@ -24,10 +24,7 @@ jobs:
         npm install
 
     - name: Login to Expo
-      run: |
-        echo "${{ secrets.EXPO_USERNAME }}" > username.txt
-        echo "${{ secrets.EXPO_PASSWORD }}" > password.txt
-        cat username.txt password.txt | eas login
+      run: eas login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}" --non-interactive
       env:
         EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
         EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
