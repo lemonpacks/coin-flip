@@ -27,7 +27,7 @@ jobs:
       run: |
         echo "${{ secrets.EXPO_USERNAME }}" > username.txt
         echo "${{ secrets.EXPO_PASSWORD }}" > password.txt
-        eas login < username.txt < password.txt
+        cat username.txt password.txt | eas login
       env:
         EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
         EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
