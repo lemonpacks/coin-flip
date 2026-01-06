@@ -26,7 +26,13 @@ jobs:
     - name: Configure EAS
       run: eas build:configure
 
+    - name: Login to Expo
+      run: |
+        echo "${{ secrets.EXPO_USERNAME }}" | eas login --username
+        echo "${{ secrets.EXPO_PASSWORD }}" | eas login --password
+      env:
+        EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
+        EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
+
     - name: Build Android app
       run: eas build -p android --profile preview --non-interactive
-      env:
-        EAS_TOKEN: ${{ secrets.EAS_TOKEN }}
