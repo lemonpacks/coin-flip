@@ -24,10 +24,9 @@ jobs:
         npm install
 
     - name: Login to Expo
-      run: eas login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}" --non-interactive
+      run: eas whoami || eas login --token ${{ secrets.EXPO_TOKEN }}
       env:
-        EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
-        EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
     - name: Configure EAS
       run: eas build:configure --non-interactive
