@@ -87,15 +87,9 @@ export default function App() {
   // 正面硬币动画样式
   const frontAnimatedStyle = useAnimatedStyle(() => {
     const rotateY = rotation.value;
-    
-    // 当旋转角度在 90-270 度之间时，正面硬币应该隐藏
-    const opacity = rotateY > 90 && rotateY < 270 ? 0 : 1;
-    
+    const opacity = rotateY % 360 > 90 && rotateY % 360 < 270 ? 0 : 1;
     return {
-      transform: [
-        { perspective: 1000 },
-        { rotateY: `${rotateY}deg` },
-      ],
+      transform: [{ perspective: 1000 }, { rotateY: `${rotateY}deg` }],
       opacity,
     };
   });
@@ -103,20 +97,10 @@ export default function App() {
   // 反面硬币动画样式
   const backAnimatedStyle = useAnimatedStyle(() => {
     const rotateY = rotation.value;
-    
-    // 反面硬币始终旋转180度 + 当前旋转角度
     const totalRotation = rotateY + 180;
-    
-    // 当总旋转角度的等效角度在 90-270 度之间时，反面硬币应该显示
-    // 计算等效角度 (0-360度)
-    const effectiveRotation = totalRotation % 360;
-    const opacity = effectiveRotation > 90 && effectiveRotation < 270 ? 1 : 0;
-    
+    const opacity = totalRotation % 360 > 90 && totalRotation % 360 < 270 ? 1 : 0;
     return {
-      transform: [
-        { perspective: 1000 },
-        { rotateY: `${totalRotation}deg` },
-      ],
+      transform: [{ perspective: 1000 }, { rotateY: `${totalRotation}deg` }],
       opacity,
     };
   });
@@ -208,8 +192,7 @@ const styles = StyleSheet.create({
     backfaceVisibility: 'hidden',
   },
   coinBack: {
-    // 反面硬币初始状态：需要旋转180度才能正面朝上
-    transform: [{ rotateY: '180deg' }],
+    // 反面硬币初始状态
     backfaceVisibility: 'hidden',
   },
   result: {
