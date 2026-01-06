@@ -87,8 +87,13 @@ export default function App() {
   // 正面硬币动画样式
   const frontAnimatedStyle = useAnimatedStyle(() => {
     const rotateY = rotation.value;
-    const opacity = rotateY % 360 > 90 && rotateY % 360 < 270 ? 0 : 1;
+    const normalizedRotation = rotateY % 360;
+    const opacity = normalizedRotation > 90 && normalizedRotation < 270 ? 0 : 1;
     return {
+      position: 'absolute',
+      width: COIN_SIZE,
+      height: COIN_SIZE,
+      backfaceVisibility: 'hidden',
       transform: [{ perspective: 1000 }, { rotateY: `${rotateY}deg` }],
       opacity,
     };
@@ -97,10 +102,14 @@ export default function App() {
   // 反面硬币动画样式
   const backAnimatedStyle = useAnimatedStyle(() => {
     const rotateY = rotation.value;
-    const totalRotation = rotateY + 180;
-    const opacity = totalRotation % 360 > 90 && totalRotation % 360 < 270 ? 1 : 0;
+    const normalizedRotation = rotateY % 360;
+    const opacity = normalizedRotation > 90 && normalizedRotation < 270 ? 1 : 0;
     return {
-      transform: [{ perspective: 1000 }, { rotateY: `${totalRotation}deg` }],
+      position: 'absolute',
+      width: COIN_SIZE,
+      height: COIN_SIZE,
+      backfaceVisibility: 'hidden',
+      transform: [{ perspective: 1000 }, { rotateY: `${rotateY + 180}deg` }],
       opacity,
     };
   });
@@ -124,12 +133,12 @@ export default function App() {
         {/* 硬币容器 */}
         <Animated.View style={[styles.coinContainer, containerAnimatedStyle]}>
           {/* 正面硬币 */}
-          <Animated.View style={[styles.coin, styles.coinFront, frontAnimatedStyle]}>
+          <Animated.View style={frontAnimatedStyle}>
             <CoinFrontSVG />
           </Animated.View>
           
           {/* 反面硬币 */}
-          <Animated.View style={[styles.coin, styles.coinBack, backAnimatedStyle]}>
+          <Animated.View style={backAnimatedStyle}>
             <CoinBackSVG />
           </Animated.View>
         </Animated.View>
