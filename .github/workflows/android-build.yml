@@ -23,8 +23,10 @@ jobs:
         npm install -g expo-cli eas-cli
         npm install
 
-    - name: Login to Expo
-      run: eas whoami || eas login --token ${{ secrets.EXPO_TOKEN }}
+    - name: Set Expo token
+      run: echo "EXPO_TOKEN=${{ secrets.EXPO_TOKEN }}" >> $GITHUB_ENV
+    - name: Verify Expo token
+      run: eas whoami
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
