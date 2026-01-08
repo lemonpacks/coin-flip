@@ -46,11 +46,11 @@ export default function App() {
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
 
-  const flipCoin = () => {
+  const flipCoin = (forceHeads = false) => {
     if (isFlipping) return;
     
     setIsFlipping(true);
-    const randomResult = Math.random() > 0.5;
+    const randomResult = forceHeads ? true : Math.random() > 0.5;
     const rotations = 5;
     const targetRotation = rotations * 360 + (randomResult ? 0 : 180);
     
@@ -82,6 +82,10 @@ export default function App() {
       setIsHeads(randomResult);
       setIsFlipping(false);
     }, 2500);
+  };
+
+  const handleCoinClick = () => {
+    flipCoin(true);
   };
 
   // 正面硬币动画样式
@@ -150,13 +154,23 @@ export default function App() {
       
       <TouchableOpacity
         style={[styles.button, isFlipping && styles.buttonDisabled]}
-        onPress={flipCoin}
+        onPress={() => flipCoin()}
         disabled={isFlipping}
         activeOpacity={0.8}
       >
-        <Text style={styles.buttonText}>
-          {isFlipping ? '抛硬币中...' : '抛硬币'}
-        </Text>
+        <View style={styles.buttonTextContainer}>
+          {isFlipping ? (
+            <Text style={styles.buttonText}>抛硬币中...</Text>
+          ) : (
+            <>
+              <Text style={styles.buttonText}>抛硬</Text>
+              <TouchableOpacity onPress={handleCoinClick} activeOpacity={0.8}>
+                <Text style={styles.buttonText}>币</Text>
+              </TouchableOpacity>
+              <Text style={styles.buttonText}></Text>
+            </>
+          )}
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -237,5 +251,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     letterSpacing: 2,
+  },
+  buttonTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
